@@ -31,7 +31,7 @@ We're taking a fresh new iOS Project as an example. Integration into an existing
 
 3. Now the Target needs to know about the new libraries it should link against. So in the _Project_, select the _Target_, and in _Build Phases_ go to the _Link Binary with Libraries_ section. Add the following:
 
-	* `libSOundCloud.a` (or `SoundCloudAPI.framework` on Desktop)
+	* `libSoundCloudAPI.a` (or `SoundCloudAPI.framework` on Desktop)
 	* `libOAuth2Client.a` (or `OAuth2Client.framework` on Desktop)
 	* `Security.framework`
 	* `AudioToolbox.framework` (if you want streaming)
