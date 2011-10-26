@@ -23,14 +23,16 @@
 // define to use production. else use sandbox
 #define kUseProduction
 
+#error Go to "http://soundcloud.com/you/apps" and register your app.
+
 #ifdef kUseProduction
 	//Production key & secret
-	#define kTestAppClientID        @"INHqfaDE8vt4Xr1mRzOmQ"
-	#define kTestAppClientSecret    @"MSAO1CJTAMkF2UkfhqKfTIAA0KFyiHFgQpELe5CTs"
+	#define kTestAppClientID        @"xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
+	#define kTestAppClientSecret    @"xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
 #else
 	//Sandbox key & secret
-	#define kTestAppClientKey       @"INHqfaDE8vt4Xr1mRzOmQ"
-	#define kTestAppClientSecret    @"MSAO1CJTAMkF2UkfhqKfTIAA0KFyiHFgQpELe5CTs"
+	#define kTestAppClientKey       @"xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
+	#define kTestAppClientSecret    @"xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
 #endif
 
 #define kRedirectURL	@"x-wrapper-test://oauth"	//remember that the myapp protocol also is set in the info.plist
