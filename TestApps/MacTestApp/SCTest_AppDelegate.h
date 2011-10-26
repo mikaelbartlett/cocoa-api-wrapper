@@ -25,14 +25,16 @@
 
 //#define kUseProduction
 
+#error Go to "http://soundcloud.com/you/apps" and register your app.
+
 #ifdef kUseProduction
 	//Production key & secret
-	#define kTestAppConsumerKey		@"INHqfaDE8vt4Xr1mRzOmQ"
-	#define kTestAppConsumerSecret	@"MSAO1CJTAMkF2UkfhqKfTIAA0KFyiHFgQpELe5CTs"
+	#define kTestAppConsumerKey		@"xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
+	#define kTestAppConsumerSecret	@"xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
 #else
 	//Sandbox key & secret
-	#define kTestAppConsumerKey		@"INHqfaDE8vt4Xr1mRzOmQ"
-	#define kTestAppConsumerSecret	@"MSAO1CJTAMkF2UkfhqKfTIAA0KFyiHFgQpELe5CTs"
+	#define kTestAppConsumerKey		@"xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
+	#define kTestAppConsumerSecret	@"xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
 #endif
 
 #define kCallbackURL	@"x-wrapper-test://oauth"	//remember that the myapp protocol also is set in the info.plist
