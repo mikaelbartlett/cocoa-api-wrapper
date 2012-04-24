@@ -134,7 +134,7 @@ void SCAudioRouteChangedCallback(void *clientData,
 											   &sessionCategory);
 		AudioSessionSetActive(TRUE);
 		if (err) {
-			NSLog(@"AudioSessionSetProperty kAudioSessionProperty_AudioCategory failed: %d", err);
+			NSLog(@"AudioSessionSetProperty kAudioSessionProperty_AudioCategory failed: %ld", err);
 		}
 		
 		// attach audio route change listener
@@ -142,7 +142,7 @@ void SCAudioRouteChangedCallback(void *clientData,
 										SCAudioRouteChangedCallback,
 										self);
 		if (err) {
-			NSLog(@"AudioSessionAddPropertyListener kAudioSessionProperty_AudioRouteChange failed: %d", err);
+			NSLog(@"AudioSessionAddPropertyListener kAudioSessionProperty_AudioRouteChange failed: %ld", err);
 		}
 #endif
 		
@@ -155,7 +155,7 @@ void SCAudioRouteChangedCallback(void *clientData,
 								  0,
 								  &audioQueue);
 		if (err) {
-			NSLog(@"AudioQueueNewOutput failed: %d", err);
+			NSLog(@"AudioQueueNewOutput failed: %ld", err);
 			return nil;
 		}
 		
@@ -163,7 +163,7 @@ void SCAudioRouteChangedCallback(void *clientData,
 		err = AudioQueueCreateTimeline(audioQueue,
 									   &audioQueueTimeline);
 		if (err) {
-			NSLog(@"AudioQueueCreateTimeline failed: %d", err);
+			NSLog(@"AudioQueueCreateTimeline failed: %ld", err);
 			return nil;
 		}
 		
@@ -173,10 +173,18 @@ void SCAudioRouteChangedCallback(void *clientData,
 											SCQueuePropertyListenerProc,
 											self);
 		if (err) {
-			NSLog(@"AudioQueueAddPropertyListener failed: %d", err);
+			NSLog(@"AudioQueueAddPropertyListener failed: %ld", err);
 			return nil;
 		}
-		
+        
+        // Turn on level metering (iOS 2.0 and later)
+        UInt32 on = 1;
+        err = AudioQueueSetProperty(audioQueue,kAudioQueueProperty_EnableLevelMetering,&on,sizeof(on));
+		if (err) {
+			NSLog(@"AudioQueueAddPropertyListener failed: %ld", err);
+			//return nil;
+		}
+        
 		if (magicCookieData) {
 			const void *cookie = [magicCookieData bytes];
 			UInt32 cookieDataSize = [magicCookieData length];
@@ -185,7 +193,7 @@ void SCAudioRouteChangedCallback(void *clientData,
 												 cookie,
 												 cookieDataSize);
 			if (err) {
-				NSLog(@"AudioQueueSetProperty kAudioQueueProperty_MagicCookie failed: %d", err);
+				NSLog(@"AudioQueueSetProperty kAudioQueueProperty_MagicCookie failed: %ld", err);
 				return nil;
 			}
 		}
@@ -251,8 +259,10 @@ void SCAudioRouteChangedCallback(void *clientData,
     AudioQueueLevelMeterState *_chan_lvls = (AudioQueueLevelMeterState*)malloc(sizeof(AudioQueueLevelMeterState) * 2);
     UInt32 data_sz = sizeof(AudioQueueLevelMeterState) * 2;
     OSStatus err = AudioQueueGetProperty(audioQueue, kAudioQueueProperty_CurrentLevelMeter, _chan_lvls, &data_sz);
-    if (err != noErr) {}
-    //NSLog(@"Left: %f Right: %f",_chan_lvls[0].mAveragePower,_chan_lvls[1].mAveragePower);
+    if (err != noErr) {
+        NSLog(@"Error: %ld", err);
+    }
+    NSLog(@"Left: %f Right: %f",_chan_lvls[0].mAveragePower,_chan_lvls[1].mAveragePower);
     CGPoint volume = CGPointMake(_chan_lvls[0].mAveragePower, _chan_lvls[1].mAveragePower);
     free(_chan_lvls);
     return volume;
@@ -332,7 +342,7 @@ void SCAudioRouteChangedCallback(void *clientData,
 										&isRunning,
 										&isRunningSize);
 			if (err) {
-				NSLog(@"get kAudioQueueProperty_IsRunning failed: %d", err);
+				NSLog(@"get kAudioQueueProperty_IsRunning failed: %ld", err);
 				return;
 			}
 			
@@ -368,7 +378,7 @@ void SCAudioRouteChangedCallback(void *clientData,
 			
 		default:
 		{
-			NSLog(@"Audio queue unhandled property change: %d",propertyID);
+			NSLog(@"Audio queue unhandled property change: %lu",propertyID);
 		}
 	}
 }
@@ -543,7 +553,7 @@ void SCAudioRouteChangedCallback(void *clientData,
 {
 	OSStatus err = AudioQueuePause(audioQueue);
 	if (err != noErr)
-		NSLog(@"AudioQueuePause failed: %d", err);
+		NSLog(@"AudioQueuePause failed: %ld", err);
 	
 	if (!playWhenReadyAgain) {
 		self.playState = SCAudioBufferPlayState_Paused;
@@ -581,11 +591,11 @@ void SCAudioRouteChangedCallback(void *clientData,
 								   inFramesPrepared,
 								   &outFramesPrepared);
 	if (err != noErr)
-		NSLog(@"AudioQueuePrime failed: %d", err);
+		NSLog(@"AudioQueuePrime failed: %ld", err);
 	
 	err = AudioQueueStart(audioQueue, NULL);
 	if (err != noErr)
-		NSLog(@"AudioQueueStart failed: %d", err);
+		NSLog(@"AudioQueueStart failed: %ld", err);
 	self.playState = SCAudioBufferPlayState_WaitingOnQueueToPlay;
 }
 
