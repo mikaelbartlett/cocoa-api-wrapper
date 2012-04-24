@@ -60,6 +60,7 @@ extern NSString * const SCAudioRouteDidUnpluggHeadphonesNotification;
 @property (readonly) float bufferingProgress;
 @property (readonly) NSUInteger playedSamples; // in milliseconds
 @property (readonly) SCAudioBufferPlayState playState;
+@property (readonly) CGPoint currentVolume;
 @property (readonly) SCAudioBufferBufferState bufferState;
 
 @property (readwrite, assign) float volume; // not observable

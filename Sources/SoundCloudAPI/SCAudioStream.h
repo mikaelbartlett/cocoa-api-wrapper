@@ -94,6 +94,7 @@ typedef enum {
 @property (readonly) SCAudioStreamState playState;			// observable
 @property (readonly) SCAudioStreamBufferState bufferState;	// observable
 @property (readonly) NSUInteger playPosition;	// in milliseconds // not observable
+@property (readonly) CGPoint currentVolume;
 @property (readonly) float bufferingProgress;	// not observable
 @property (readwrite, assign) float volume;
 @property (readonly) NSURL *URL;

@@ -122,6 +122,11 @@ NSString * const SCAudioStreamDidBecomeUnavailableNotification = @"SCAudioStream
 	return playPosition;
 }
 
+- (CGPoint)currentVolume;
+{
+    return audioBufferQueue.currentVolume;
+}
+
 - (float)bufferingProgress;
 {
 	if (audioBufferQueue.bufferState == SCAudioBufferBufferState_NotBuffering)

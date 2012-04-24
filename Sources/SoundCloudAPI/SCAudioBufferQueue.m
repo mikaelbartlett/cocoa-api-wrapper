@@ -242,6 +242,22 @@ void SCAudioRouteChangedCallback(void *clientData,
 	return timeStamp.mSampleTime;
 }
 
+- (CGPoint)currentVolume
+{
+	if (!audioQueue
+		|| !audioQueueTimeline)
+		return CGPointMake(0.0f, 0.0f);
+    
+    AudioQueueLevelMeterState *_chan_lvls = (AudioQueueLevelMeterState*)malloc(sizeof(AudioQueueLevelMeterState) * 2);
+    UInt32 data_sz = sizeof(AudioQueueLevelMeterState) * 2;
+    OSStatus err = AudioQueueGetProperty(audioQueue, kAudioQueueProperty_CurrentLevelMeter, _chan_lvls, &data_sz);
+    if (err != noErr) {}
+    //NSLog(@"Left: %f Right: %f",_chan_lvls[0].mAveragePower,_chan_lvls[1].mAveragePower);
+    CGPoint volume = CGPointMake(_chan_lvls[0].mAveragePower, _chan_lvls[1].mAveragePower);
+    free(_chan_lvls);
+    return volume;
+}
+
 - (float)bufferingProgress;
 {
 	float ret = (float)buffersInQueue / kBuffersFilledRunningLow;
